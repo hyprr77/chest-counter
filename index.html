@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chest Counter - a chest counter overlay for Fortnite</title>
+<meta name="description" content="A small always-on-top overlay that counts Fortnite chests, with hotkeys and a celebration every 100.">
+<link rel="icon" href="chest.png">
+<style>
+  :root {
+    --bg: #0e0a1c;
+    --card: #1a1433;
+    --line: #3a3160;
+    --text: #eee9f8;
+    --muted: #9a8fbb;
+    --gold: #f6c343;
+    --gold-hover: #ffd66e;
+    --ink: #1e1405;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: radial-gradient(900px 500px at 50% -120px, #2a1f55 0%, var(--bg) 70%) no-repeat, var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 56px 20px 40px; }
+
+  /* hero */
+  .hero { text-align: center; }
+  .hero img { width: 150px; height: auto; filter: drop-shadow(0 8px 30px rgba(246, 195, 67, .35)); }
+  h1 { margin: 18px 0 6px; font-size: clamp(2rem, 6vw, 3rem); letter-spacing: .5px; }
+  h1 span { color: var(--gold); }
+  .tag { margin: 0 auto 26px; max-width: 520px; color: var(--muted); font-size: 1.1rem; }
+  .btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 14px 30px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background .15s, transform .15s;
+  }
+  .btn:hover { background: var(--gold-hover); transform: translateY(-1px); }
+  .sub { margin-top: 12px; font-size: .9rem; color: var(--muted); }
+  .sub a { color: var(--muted); }
+
+  /* sections */
+  h2 {
+    margin: 52px 0 14px;
+    font-size: .85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  .card b { display: block; margin-bottom: 4px; }
+  .card span { color: var(--muted); font-size: .95rem; }
+
+  ol { padding-left: 22px; margin: 0; }
+  ol li { margin: 8px 0; }
+  ol li::marker { color: var(--gold); font-weight: 700; }
+
+  .keys { display: flex; flex-wrap: wrap; gap: 10px 22px; }
+  kbd {
+    display: inline-block;
+    min-width: 34px;
+    text-align: center;
+    padding: 3px 9px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-bottom-width: 3px;
+    border-radius: 7px;
+    font: 600 .95rem "Segoe UI", system-ui, sans-serif;
+    color: var(--gold);
+  }
+
+  .note { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--gold); border-radius: 10px; padding: 14px 18px; color: var(--muted); }
+  .note b { color: var(--text); }
+
+  footer { margin-top: 56px; padding-top: 22px; border-top: 1px solid var(--line); text-align: center; color: var(--muted); font-size: .88rem; }
+  footer a { color: var(--gold); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  footer p { margin: 6px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <img src="chest.png" alt="Chest">
+    <h1>Chest <span>Counter</span></h1>
+    <p class="tag">A small always-on-top overlay that counts your Fortnite chests. Built for streams.</p>
+    <a class="btn" id="download" href="https://github.com/">Download for Windows</a>
+    <p class="sub">Free and open source &middot; Windows 10 / 11 &middot; <a id="releases" href="https://github.com/">All releases</a></p>
+  </header>
+
+  <h2>What it does</h2>
+  <div class="grid">
+    <div class="card"><b>Hotkey counting</b><span>Add or remove a chest with a key, even while the game is focused.</span></div>
+    <div class="card"><b>Celebration every 100</b><span>A gold burst when you hit 100, 200, 300 and so on.</span></div>
+    <div class="card"><b>Made for streams</b><span>Resizable, draggable, and it shows on top of the game.</span></div>
+    <div class="card"><b>Yours to set up</b><span>Change the keys, type in a number, turn effects off.</span></div>
+  </div>
+
+  <h2>Get started</h2>
+  <ol>
+    <li>Click <b>Download for Windows</b> and <b>extract</b> the zip.</li>
+    <li>Run <b>ChestCounter.exe</b>. No install needed.</li>
+    <li>Set Fortnite to <b>Windowed Fullscreen</b> so the counter can show on top of the game.</li>
+    <li>Optional: right-click its taskbar icon and choose <b>Pin to taskbar</b>.</li>
+  </ol>
+
+  <h2>Default keys</h2>
+  <div class="keys">
+    <div><kbd>F8</kbd> add a chest</div>
+    <div><kbd>F7</kbd> remove a chest</div>
+    <div><kbd>F9</kbd> reset to 0</div>
+  </div>
+  <p style="color: var(--muted); margin-top: 12px;">Change them any time from the gear at the top of the counter.</p>
+
+  <h2>Is it safe?</h2>
+  <div class="note">
+    <p style="margin-top:0"><b>Windows may warn you.</b> The app isn't signed with a paid certificate, so Windows can say
+    &ldquo;Windows protected your PC.&rdquo; Click <b>More info</b>, then <b>Run anyway</b>.</p>
+    <p style="margin-bottom:0">The app only checks whether your chosen keys are pressed and saves your count in a small file.
+    It has no network code and doesn't touch the game. The full source is on GitHub, and every release is built there
+    from that source, so you can <a id="source" href="https://github.com/" style="color: var(--gold)">read it yourself</a>.</p>
+  </div>
+
+  <footer>
+    <p>Made by <b>@hypr.7</b></p>
+    <p><a id="source2" href="https://github.com/">Source code on GitHub</a></p>
+    <p>Not affiliated with or endorsed by Epic Games. Fortnite and the chest artwork belong to Epic Games.</p>
+  </footer>
+
+</div>
+
+<script>
+  // Works out the links from the page address, so there's no username to fill in.
+  (function () {
+    var host = location.hostname;
+    var parts = location.pathname.split('/').filter(Boolean);
+    if (!/\.github\.io$/.test(host) || parts.length === 0) return;
+    var base = 'https://github.com/' + host.split('.')[0] + '/' + parts[0];
+    var set = function (id, url) { var el = document.getElementById(id); if (el) el.href = url; };
+    set('download', base + '/releases/latest/download/ChestCounter-windows.zip');
+    set('releases', base + '/releases');
+    set('source', base);
+    set('source2', base);
+  })();
+</script>
+</body>
+</html>
