@@ -1,0 +1,46 @@
+name: Build
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build exe
+        shell: cmd
+        run: |
+          "%WINDIR%\Microsoft.NET\Framework64\v4.0.30319\csc.exe" /nologo /target:winexe /optimize+ /out:ChestCounter.exe /win32icon:chest.ico /win32manifest:ChestCounter.manifest /resource:chest.png,chest.png /reference:System.Windows.Forms.dll /reference:System.Drawing.dll ChestCounter.cs
+
+      - name: Zip
+        shell: pwsh
+        run: |
+          Compress-Archive -Path ChestCounter.exe,README.txt -DestinationPath ChestCounter-windows.zip -Force
+          Get-FileHash ChestCounter.exe -Algorithm SHA256 | Format-List
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: ChestCounter.exe
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChestCounter
+          path: ChestCounter-windows.zip
+
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ChestCounter-windows.zip
+          generate_release_notes: true
